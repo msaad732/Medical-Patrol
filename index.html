@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Medical Patrol</title>
+  <style>
+    :root {
+      /* Dark Mode Colors */
+      --bg-primary: url('https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+      --bg-secondary: rgba(30, 30, 50, 0.95);
+      --bg-tertiary: rgba(40, 40, 60, 0.9);
+      --text-primary: #ffffff;
+      --text-secondary: #e0e0e0;
+      --text-light: #b0b0b0;
+      --text-white: #ffffff;
+      --border-primary: #4a9eff;
+      --border-secondary: #404040;
+      --shadow: rgba(0, 0, 0, 0.3);
+      --shadow-dark: rgba(0, 0, 0, 0.5);
+      --accent-primary: #4a9eff;
+      --accent-secondary: #7c3aed;
+      --success: #10b981;
+      --chat-bg: #2a2a3a;
+      --upload-bg: rgba(74, 158, 255, 0.1);
+      --upload-hover: rgba(124, 58, 237, 0.1);
+      --upload-success: rgba(16, 185, 129, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-primary);
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      min-height: 100vh;
+      padding: 20px;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    /* Additional background overlay for better readability */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        linear-gradient(135deg, rgba(26, 26, 46, 0.7) 0%, rgba(22, 33, 62, 0.7) 100%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .main-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      color: var(--text-white);
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 300;
+      margin-bottom: 40px;
+      text-shadow: 0 2px 4px var(--shadow);
+      position: relative;
+    }
+
+    .upload-section {
+      background: var(--bg-secondary);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 40px var(--shadow);
+      max-width: 600px;
+      margin: 0 auto;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .upload-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    }
+
+    .upload-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .file-upload-area {
+      border: 3px dashed var(--border-primary);
+      border-radius: 15px;
+      padding: 40px 20px;
+      text-align: center;
+      background: var(--upload-bg);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .file-upload-area::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transition: left 0.5s;
+    }
+
+    .file-upload-area:hover::before {
+      left: 100%;
+    }
+
+    .file-upload-area:hover {
+      border-color: var(--accent-secondary);
+      background: var(--upload-hover);
+      transform: translateY(-2px);
+    }
+
+    .file-upload-area input[type="file"] {
+      display: none;
+    }
+
+    .upload-icon {
+      font-size: 3rem;
+      color: var(--accent-primary);
+      margin-bottom: 15px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .upload-text {
+      color: var(--text-primary);
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    .upload-subtext {
+      color: var(--text-light);
+      font-size: 0.9rem;
+      margin-top: 5px;
+    }
+
+    .check-button {
+      background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+      color: var(--text-white);
+      border: none;
+      border-radius: 12px;
+      padding: 15px 30px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .check-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .check-button:hover::before {
+      left: 100%;
+    }
+
+    .check-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 25px rgba(102, 126, 234, 0.4);
+    }
+
+    .check-button:active {
+      transform: translateY(0);
+    }
+
+    .result-container {
+      margin-top: 30px;
+      padding: 25px;
+      background: var(--bg-tertiary);
+      border-radius: 15px;
+      border-left: 5px solid var(--border-primary);
+      display: none;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .result-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.05) 50%, transparent 70%);
+      animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .result-label {
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+    }
+
+    .result-content {
+      color: var(--text-secondary);
+      line-height: 1.6;
+      font-size: 1rem;
+    }
+
+    /* Chatbot Styles */
+    .chatbot-container {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 1000;
+      width: 350px;
+      background: var(--bg-secondary);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px var(--shadow-dark);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .chatbot-container.minimized {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .chatbot-container.minimized .chatbot-body {
+      display: none;
+    }
+
+    .chatbot-container.minimized .chatbot-header {
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      border-radius: 50%;
+    }
+
+    .chatbot-container.minimized .chatbot-header::before {
+      display: none;
+    }
+
+    .chatbot-container.minimized .chatbot-header .header-text {
+      display: none;
+    }
+
+    .chatbot-container.minimized .chatbot-header .minimize-btn {
+      display: none;
+    }
+
+    .chatbot-container.minimized .chatbot-header .expand-btn {
+      display: block;
+      font-size: 1.5rem;
+    }
+
+    .chatbot-header {
+      background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+      color: var(--text-white);
+      padding: 20px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 1.1rem;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .chatbot-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=60');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.1;
+      z-index: -1;
+    }
+
+    .header-text {
+      flex: 1;
+      text-align: center;
+    }
+
+    .minimize-btn, .expand-btn, .tts-toggle-btn {
+      background: none;
+      border: none;
+      color: var(--text-white);
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+    }
+
+    .minimize-btn:hover, .expand-btn:hover, .tts-toggle-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.1);
+    }
+
+    .tts-toggle-btn.active {
+      background: rgba(16, 185, 129, 0.3);
+      color: #10b981;
+    }
+
+    .expand-btn {
+      display: none;
+    }
+
+    .chatbot-body {
+      padding: 20px;
+      max-height: 400px;
+      overflow-y: auto;
+      transition: all 0.3s ease;
+    }
+
+    .chat-input-container {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .chat-input {
+      flex: 1;
+      padding: 12px 15px;
+      border: 2px solid var(--border-secondary);
+      border-radius: 25px;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.3s ease;
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+    }
+
+    .chat-input:focus {
+      border-color: var(--accent-primary);
+    }
+
+    .chat-input::placeholder {
+      color: var(--text-light);
+    }
+
+    .chat-send-btn {
+      background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+      color: var(--text-white);
+      border: none;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+    }
+
+    .chat-send-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .chat-response {
+      background: var(--chat-bg);
+      padding: 15px;
+      border-radius: 15px;
+      margin-top: 15px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: var(--text-primary);
+      border-left: 4px solid var(--accent-primary);
+      transition: all 0.3s ease;
+    }
+
+    .chat-response:empty {
+      display: none;
+    }
+
+    /* Scrollbar Styling */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-tertiary);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--accent-primary);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent-secondary);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .main-container {
+        padding: 10px;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .upload-section {
+        padding: 30px 20px;
+      }
+      
+      .chatbot-container {
+        width: 300px;
+        right: 20px;
+        bottom: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .chatbot-container {
+        width: calc(100vw - 40px);
+        right: 20px;
+        left: 20px;
+      }
+    }
+    .popup-modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .popup-content {
+      background-color: #fff;
+      padding: 20px 30px;
+      border-radius: 8px;
+      text-align: center;
+      max-width: 400px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+      position: relative;
+    }
+
+    .popup-content h3 {
+      margin-top: 0;
+      color: #c00;
+    }
+
+    .close {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      padding: 15px 20px;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      z-index: 9999;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .toast.success {
+      background-color: #28a745;
+    }
+
+    .toast.error {
+      background-color: #dc3545;
+    }
+
+    /* Voice Recording Styles */
+    .voice-recording-container {
+      position: fixed;
+      bottom: 30px;
+      right: 400px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .voice-btn {
+      background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+      color: var(--text-white);
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .voice-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .voice-btn:hover::before {
+      left: 100%;
+    }
+
+    .voice-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 12px 25px rgba(102, 126, 234, 0.4);
+    }
+
+    .voice-btn.recording {
+      background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+      animation: pulse-red 1s infinite;
+    }
+
+    @keyframes pulse-red {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    @keyframes pulse-green {
+      0%, 100% { 
+        border-left-color: #10b981;
+        box-shadow: 0 0 5px rgba(16, 185, 129, 0.3);
+      }
+      50% { 
+        border-left-color: #059669;
+        box-shadow: 0 0 15px rgba(16, 185, 129, 0.6);
+      }
+    }
+
+    .voice-status {
+      background: var(--bg-secondary);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 10px 15px;
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      text-align: center;
+      min-width: 120px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: none;
+    }
+
+    .voice-status.show {
+      display: block;
+    }
+
+    /* Responsive adjustments for voice recording */
+    @media (max-width: 768px) {
+      .voice-recording-container {
+        right: 320px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .voice-recording-container {
+        right: 20px;
+        bottom: 100px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <h1>Medical Patrol</h1>
+
+    <div class="upload-section">
+      <form id="uploadForm" class="upload-form">
+        <div class="file-upload-area" onclick="document.getElementById('imageInput').click()">
+          <div class="upload-icon">📷</div>
+          <div class="upload-text">Upload Medicine Image</div>
+          <div class="upload-subtext">Click to browse or drag and drop</div>
+          <input type="file" name="image" id="imageInput" required accept="image/*">
+        </div>
+        <button type="submit" class="check-button">🔍 Check Medicine</button>
+      </form>
+
+      <div id="result" class="result-container">
+        <div class="result-label">🤖 AI Response:</div>
+        <div id="response" class="result-content"></div>
+      </div>
+
+      <div id="result" style="display: none; margin-top: 20px;">
+        <p><strong>Extracted Text:</strong></p>
+        <pre id="text"></pre>
+
+        <p><strong>AI Response:</strong></p>
+        <pre id="response"></pre>
+
+        <p id="emailStatus"></p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Chatbot Section -->
+  <div class="chatbot-container" id="chatbotContainer">
+    <div class="chatbot-header">
+      <button class="minimize-btn" onclick="toggleChatbot()">−</button>
+      <div class="header-text">💬 Medicine Assistant</div>
+      <button class="tts-toggle-btn" id="ttsToggle" onclick="toggleTTS()" title="Toggle Text-to-Speech">🔊</button>
+      <button class="expand-btn" onclick="toggleChatbot()">+</button>
+    </div>
+    <div class="chatbot-body">
+      <div class="chat-input-container">
+        <input type="text" id="chatInput" class="chat-input" placeholder="Ask about medicine...">
+        <button onclick="sendChat()" class="chat-send-btn">➤</button>
+      </div>
+      <div id="chatResponse" class="chat-response"></div>
+    </div>
+  </div>
+
+  <div class="voice-recording-container">
+    <button id="startRecording" class="voice-btn">🎤</button>
+    <div id="transcriptionResult" class="voice-status"></div>
+  </div>
+
+  
+  <!-- Popup Modal -->
+  <div id="popupModal" class="popup-modal">
+    <div class="popup-content">
+      <span id="closePopup" class="close">&times;</span>
+      <h3>🚨 Fake Medicine Detected</h3>
+      <p>An alert email has been sent to: <span id="popupEmail"></span></p>
+    </div>
+  </div>
+
+
+  <script>
+    // Chatbot minimize/expand functionality
+    function toggleChatbot() {
+      const chatbot = document.getElementById('chatbotContainer');
+      chatbot.classList.toggle('minimized');
+      localStorage.setItem('chatbotMinimized', chatbot.classList.contains('minimized'));
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const chatbot = document.getElementById('chatbotContainer');
+      const isMinimized = localStorage.getItem('chatbotMinimized') === 'true';
+      if (isMinimized) {
+        chatbot.classList.add('minimized');
+      }
+    });
+
+    // File upload area interaction
+    const fileUploadArea = document.querySelector('.file-upload-area');
+    const fileInput = document.getElementById('imageInput');
+
+    fileInput.addEventListener('change', function () {
+      if (this.files.length > 0) {
+        fileUploadArea.style.borderColor = 'var(--success)';
+        fileUploadArea.style.background = 'var(--upload-success)';
+        fileUploadArea.querySelector('.upload-text').textContent = `Selected: ${this.files[0].name}`;
+      }
+    });
+
+    // Drag and drop functionality
+    fileUploadArea.addEventListener('dragover', function (e) {
+      e.preventDefault();
+      this.style.borderColor = 'var(--accent-secondary)';
+      this.style.background = 'var(--upload-hover)';
+    });
+
+    fileUploadArea.addEventListener('dragleave', function (e) {
+      e.preventDefault();
+      this.style.borderColor = 'var(--border-primary)';
+      this.style.background = 'var(--upload-bg)';
+    });
+
+    fileUploadArea.addEventListener('drop', function (e) {
+      e.preventDefault();
+      const files = e.dataTransfer.files;
+      if (files.length > 0) {
+        fileInput.files = files;
+        this.style.borderColor = 'var(--success)';
+        this.style.background = 'var(--upload-success)';
+        this.querySelector('.upload-text').textContent = `Selected: ${files[0].name}`;
+      }
+    });
+
+    // Chatbot Logic
+    function sendChat() {
+      const prompt = document.getElementById('chatInput').value;
+      if (!prompt.trim()) return;
+
+      const chatResponse = document.getElementById('chatResponse');
+      chatResponse.textContent = 'Thinking...';
+      chatResponse.style.display = 'block';
+
+      fetch('/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt })
+      })
+      .then(res => res.json())
+      .then(data => {
+        chatResponse.textContent = data.response;
+        // Read the response out loud
+        speakText(data.response);
+      })
+      .catch(err => {
+        chatResponse.textContent = "Sorry, I couldn't process your request. Please try again.";
+        console.error(err);
+      });
+
+      document.getElementById('chatInput').value = '';
+    }
+
+    // Text-to-Speech Function
+    function speakText(text) {
+      // Check if browser supports speech synthesis
+      if ('speechSynthesis' in window) {
+        // Stop any current speech
+        window.speechSynthesis.cancel();
+        
+        // Create speech utterance
+        const utterance = new SpeechSynthesisUtterance(text);
+        
+        // Configure speech settings
+        utterance.rate = 0.9; // Slightly slower than normal
+        utterance.pitch = 1.0; // Normal pitch
+        utterance.volume = 0.8; // 80% volume
+        
+        // Try to use a female voice if available
+        const voices = speechSynthesis.getVoices();
+        const femaleVoice = voices.find(voice => 
+          voice.name.includes('female') || 
+          voice.name.includes('Female') ||
+          voice.name.includes('Samantha') ||
+          voice.name.includes('Victoria')
+        );
+        
+        if (femaleVoice) {
+          utterance.voice = femaleVoice;
+        }
+        
+        // Speak the text
+        window.speechSynthesis.speak(utterance);
+        
+        // Add visual feedback
+        const chatResponse = document.getElementById('chatResponse');
+        chatResponse.style.borderLeftColor = '#10b981'; // Green border while speaking
+        chatResponse.style.animation = 'pulse-green 1s infinite';
+        
+        // Reset visual feedback when speech ends
+        utterance.onend = () => {
+          chatResponse.style.borderLeftColor = 'var(--accent-primary)';
+          chatResponse.style.animation = 'none';
+        };
+        
+        utterance.onerror = () => {
+          chatResponse.style.borderLeftColor = 'var(--accent-primary)';
+          chatResponse.style.animation = 'none';
+        };
+      }
+    }
+
+    document.getElementById('chatInput').addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        sendChat();
+      }
+    });
+
+    // Form Submit Logic
+    const form = document.getElementById('uploadForm');
+    const resultDiv = document.getElementById('result');
+    const responseDiv = document.getElementById('response');
+    const textDiv = document.getElementById('text');
+    const emailStatus = document.getElementById('emailStatus');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const formData = new FormData();
+      const fileInput = document.getElementById('imageInput');
+
+      if (!fileInput.files[0]) {
+        alert('Please select an image first.');
+        return;
+      }
+
+      formData.append('image', fileInput.files[0]);
+
+      responseDiv.textContent = 'Analyzing image...';
+      textDiv.textContent = '';
+      emailStatus.textContent = '';
+      resultDiv.style.display = 'block';
+
+      fetch('/check', {
+        method: 'POST',
+        body: formData
+      })
+        .then(res => res.json())
+        .then(data => {
+          responseDiv.textContent = data.groq_response;
+
+          // ✅ Show popup if email was sent
+          if (data.email_sent) {
+            alert("⚠️ Fake medicine detected! Email sent to the admin.");
+          }
+        })
+
+        .catch(err => {
+          responseDiv.textContent = '❌ Error checking medicine. Please try again.';
+          emailStatus.textContent = '';
+          console.error(err);
+        });
+    });
+
+    // Close popup logic
+    document.getElementById('closePopup').addEventListener('click', function () {
+      document.getElementById('popupModal').style.display = 'none';
+    });
+
+    // Close when clicking outside the modal
+    window.addEventListener('click', function (e) {
+      const modal = document.getElementById('popupModal');
+      if (e.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+
+
+    //new
+    const startBtn = document.getElementById("startRecording");
+    const resultText = document.getElementById("transcriptionResult");
+    const chatInput = document.getElementById("chatInput");
+
+    let isRecording = false;
+    let recognition = null;
+
+    // Check if browser supports speech recognition
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = 'en-US';
+    }
+
+    startBtn.onclick = async () => {
+        if (!recognition) {
+            resultText.textContent = "Speech recognition not supported in this browser";
+            resultText.classList.add('show');
+            setTimeout(() => {
+                resultText.classList.remove('show');
+            }, 3000);
+            return;
+        }
+
+        if (isRecording) {
+            // Stop recording
+            recognition.stop();
+            return;
+        }
+
+        try {
+            // Start recording
+            isRecording = true;
+            startBtn.classList.add('recording');
+            startBtn.textContent = '⏹️';
+            resultText.textContent = "Listening...";
+            resultText.classList.add('show');
+
+            recognition.start();
+
+        } catch (error) {
+            console.error('Error starting speech recognition:', error);
+            resultText.textContent = "Error starting speech recognition";
+            resultText.classList.add('show');
+            setTimeout(() => {
+                resultText.classList.remove('show');
+            }, 9000);
+            resetRecordingState();
+        }
+    };
+
+    // Speech recognition event handlers
+    if (recognition) {
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript;
+            
+            if (transcript.trim()) {
+                // Put the transcribed text in the chat input
+                chatInput.value = transcript;
+                resultText.textContent = `Transcribed: ${transcript}`;
+                
+                // Automatically send the message after 1 second
+                setTimeout(() => {
+                    sendChat();
+                }, 1000);
+            } else {
+                resultText.textContent = "No speech detected";
+            }
+
+            // Hide status after 3 seconds
+            setTimeout(() => {
+                resultText.classList.remove('show');
+            }, 3000);
+        };
+
+        recognition.onerror = (event) => {
+            console.error('Speech recognition error:', event.error);
+            let errorMessage = "Speech recognition error";
+            
+            switch(event.error) {
+                case 'no-speech':
+                    errorMessage = "No speech detected";
+                    break;
+                case 'audio-capture':
+                    errorMessage = "Microphone access denied";
+                    break;
+                case 'not-allowed':
+                    errorMessage = "Microphone permission denied";
+                    break;
+                default:
+                    errorMessage = `Error: ${event.error}`;
+            }
+            
+            resultText.textContent = errorMessage;
+            resultText.classList.add('show');
+            setTimeout(() => {
+                resultText.classList.remove('show');
+            }, 3000);
+            resetRecordingState();
+        };
+
+        recognition.onend = () => {
+            resetRecordingState();
+        };
+    }
+
+    // Reset recording state
+    function resetRecordingState() {
+        isRecording = false;
+        startBtn.classList.remove('recording');
+        startBtn.textContent = '🎤';
+    }
+
+  </script>
+
+</body>
+</html>
