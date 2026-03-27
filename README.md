@@ -28,8 +28,7 @@ Counterfeit medicines are a silent global health crisis, particularly in underse
 ---
 
 ## 📸 See It In Action
-* <img width="1042" height="552" alt="image" src="https://github.com/user-attachments/assets/724c3f3d-648c-41f1-8d2e-e960cfb3064f" />
-* <img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/490d4504-97a5-4819-affa-f37d13df4285" />
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/490d4504-97a5-4819-affa-f37d13df4285" />
 
 
 ---
