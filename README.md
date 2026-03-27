@@ -39,6 +39,7 @@ Counterfeit medicines are a silent global health crisis, particularly in underse
 
 ### 1. Installation & Environment
 Clone the repository and set up your Python virtual environment:
+
 ```bash
 git clone [https://github.com/msaad732/Medical-Patrol.git](https://github.com/msaad732/Medical-Patrol.git)
 cd medical-patrol
@@ -49,35 +50,39 @@ source venv/bin/activate   # Mac/Linux
 venv\Scripts\activate      # Windows
 
 pip install -r requirements.txt
-2. Environment Variables
-Medical Patrol relies on several external APIs. Create a .env file in the root directory and add your credentials:
+```
 
-Code snippet
+### 2. Environment Variables
+Medical Patrol relies on several external APIs. Create a `.env` file in the root directory and add your credentials:
+
+```env
 OCR_API_KEY=your_ocr_space_api_key
 GROQ_API_KEY=your_groq_api_key
 EMAIL_USER=your_alert_sender_email@gmail.com
 EMAIL_PASS=your_email_app_password
-3. Run the Application
+```
+
+### 3. Run the Application
 Start the Flask development server:
 
-Bash
+```bash
 python app.py
-The application will be live at: http://localhost:5000
+```
+The application will be live at: `http://localhost:5000`
 
-🛠️ Technology Stack
-Core AI/NLP: LLaMA-3 (via Groq), Whisper (Speech-to-Text)
+---
 
-Computer Vision: OCR.space API
+## 🛠️ Technology Stack
+* **Core AI/NLP:** LLaMA-3 (via Groq), Whisper (Speech-to-Text)
+* **Computer Vision:** OCR.space API 
+* **Backend Framework:** Python / Flask
+* **Conversational Infrastructure:** Model Context Protocol (MCP) for persistent chatbot memory
+* **Automation:** Python `smtplib` for autonomous reporting and email alerts
 
-Backend Framework: Python / Flask
+---
 
-Conversational Infrastructure: Model Context Protocol (MCP) for persistent chatbot memory
+## 🌱 Project Origins
+Medical Patrol was developed during the **Raise Your Hack Hackathon (July 4–8, 2024)**. It was built specifically to support the **#HackForAfrica** initiative, focusing on creating scalable, low-cost social impact technology to protect vulnerable communities. 
 
-Automation: Python smtplib for autonomous reporting and email alerts
-
-🌱 Project Origins
-Medical Patrol was developed during the Raise Your Hack Hackathon (July 4–8, 2024). It was built specifically to support the #HackForAfrica initiative, focusing on creating scalable, low-cost social impact technology to protect vulnerable communities.
-
-Built By: * Muhammad Saad
-
-Eman Khaliq
+**Built By:** * Muhammad Saad
+* Eman Khaliq
