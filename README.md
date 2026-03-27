@@ -28,10 +28,9 @@ Counterfeit medicines are a silent global health crisis, particularly in underse
 ---
 
 ## 📸 See It In Action
-*(Add your demo GIFs or screenshots here!)*
-* `[Screenshot 1: The Dashboard / Upload Screen]`
-* `[Screenshot 2: AI detecting a fake label]`
-* `[Screenshot 3: The Voice Chatbot interface]`
+* <img width="1042" height="552" alt="image" src="https://github.com/user-attachments/assets/724c3f3d-648c-41f1-8d2e-e960cfb3064f" />
+* <img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/490d4504-97a5-4819-affa-f37d13df4285" />
+
 
 ---
 
@@ -84,5 +83,6 @@ The application will be live at: `http://localhost:5000`
 ## 🌱 Project Origins
 Medical Patrol was developed during the **Raise Your Hack Hackathon (July 4–8, 2024)**. It was built specifically to support the **#HackForAfrica** initiative, focusing on creating scalable, low-cost social impact technology to protect vulnerable communities. 
 
-**Built By:** * Muhammad Saad
+**Built By:** 
+* Muhammad Saad
 * Eman Khaliq
